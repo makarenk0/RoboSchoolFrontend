@@ -1,0 +1,16 @@
+@import "~bootstrap/scss/bootstrap";
+
+.user-choosing{
+    margin-top: 20%;
+    li{
+        list-style-type: none;
+        margin-top: 20px;
+        button{
+            width: 250px;
+        }
+    }
+}
+
+.input-field{
+    margin-top: 20px;
+}
