@@ -1,8 +1,11 @@
-import React, {useState, useContext} from 'react'
+import React, {useState, useContext, useEffect} from 'react'
 import {RouteButton} from '../components/RouteButton';
 import {AlertContext} from '../context/alert/alertContext'
 
 import { Alert } from '../components/Alert'
+
+//test
+import axios from 'axios';
 
 
 export const SignIn = ({match}) => {
@@ -21,7 +24,25 @@ export const SignIn = ({match}) => {
       console.log(values[1]);                   //login
       console.log(values[2]);   
       if(values[0].params.userType === 'admin'){
-        window.location.assign('/admin')
+
+
+        var tokenKey = "accessToken";
+          const login = async () => {
+          await axios.post('https://localhost:44354/api/manager/token',
+          {
+            Login: values[1],
+            Password: values[2]
+          }
+          )
+            .then(response => {
+              if (response.status === 200) {
+                sessionStorage.setItem(tokenKey, response.data.access_token);
+                console.log(response);
+                window.location.assign('/admin')
+             }
+            });
+          }
+        login();
       }
    }
 
