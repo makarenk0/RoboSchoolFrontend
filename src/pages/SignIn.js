@@ -1,4 +1,4 @@
-import React, {useState, useContext, useEffect} from 'react'
+import React, {useState, useContext} from 'react'
 import {RouteButton} from '../components/RouteButton';
 import {AlertContext} from '../context/alert/alertContext'
 
@@ -25,18 +25,17 @@ export const SignIn = ({match}) => {
       console.log(values[2]);   
       if(values[0].params.userType === 'admin'){
 
-
-        var tokenKey = "accessToken";
           const login = async () => {
-          await axios.post('https://localhost:44354/api/manager/token',
+          await axios.post('https://localhost:44354/api/admin/token',
           {
             Login: values[1],
-            Password: values[2]
+            Password: values[2],
+            Role: "admin"
           }
           )
             .then(response => {
               if (response.status === 200) {
-                sessionStorage.setItem(tokenKey, response.data.access_token);
+                sessionStorage.setItem("accessToken", response.data.access_token);
                 console.log(response);
                 window.location.assign('/admin')
              }
