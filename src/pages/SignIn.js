@@ -18,7 +18,7 @@ export const SignIn = ({match}) => {
 
 
     const btnSubmit = values =>{
-      alert.show('Спасибо за внимание', 'success')
+      
       //window.location.assign('/'); when backend ready
       console.log(values[0].params.userType);   //usertype
       console.log(values[1]);                   //login
@@ -35,11 +35,12 @@ export const SignIn = ({match}) => {
           )
             .then(response => {
               if (response.status === 200) {
+                alert.show('Successfull sign in', 'success')
                 sessionStorage.setItem("accessToken", response.data.access_token);
                 console.log(response);
                 window.location.assign('/admin')
              }
-            });
+            }, (error) => {alert.show('Error', 'danger')});
           }
         login();
       }

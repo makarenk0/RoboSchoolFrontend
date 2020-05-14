@@ -4,14 +4,14 @@ import axios from 'axios';
 import {Loader} from '../../components/Loader'
 import { AddingForm } from '../../components/AddingForm';
 
-export const Managers_list = () =>{
+export const Teachers_list = () =>{
 
     const [data, setData] = useState({ hits: [] });
     const [loading, setLoading] = useState(true);
  
     useEffect(() => {
       const fetchData = async () => {
-      await axios.get('https://localhost:44354/api/admin/get_all_managers', 
+      await axios.get('https://localhost:44354/api/admin/get_all_teachers', 
       {
         headers:{
           "Authorization": "Bearer " + sessionStorage.getItem("accessToken")  
@@ -27,7 +27,7 @@ export const Managers_list = () =>{
 
     const deleting = async(id) => {
       setData(data.filter(row => row[Object.keys(row)[0]]!==id));
-      await axios.get(`https://localhost:44354/api/admin/delete_manager/${id}`, 
+      await axios.get(`https://localhost:44354/api/admin/delete_teacher/${id}`, 
       {
         headers:{
           "Authorization": "Bearer " + sessionStorage.getItem("accessToken")  
@@ -44,7 +44,7 @@ export const Managers_list = () =>{
                                   {type: 'select', title: 'school', servName: 'adress', servData: 'https://localhost:44354/api/admin/get_all_schools', endRow: true},
                                   {type: 'input', title: 'password', servName: 'Password_temp', servData: '', endRow: true},
                                  //{type: 'multiple-select', title: 'items', servName: 'adress', servData: 'https://localhost:44354/api/admin/get_all_schools', endRow: true}
-                                ]} submitRequest = 'https://localhost:44354/api/admin/add_manager'></AddingForm>
+                                ]} submitRequest = 'https://localhost:44354/api/admin/add_teacher'></AddingForm>
       </div>
         <div style={{marginTop: "50px"}}>
            
