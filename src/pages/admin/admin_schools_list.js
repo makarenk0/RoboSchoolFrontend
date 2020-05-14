@@ -10,6 +10,7 @@ export const Schools_list = () =>{
     const [loading, setLoading] = useState(true);
  
     useEffect(() => {
+      let isCancelled = false;
       const fetchData = async () => {
       await axios.get('https://localhost:44354/api/admin/get_all_schools', 
       {
@@ -17,11 +18,16 @@ export const Schools_list = () =>{
           "Authorization": "Bearer " + sessionStorage.getItem("accessToken")  
       }})
         .then(response => {
+          if(!isCancelled){
             setData(response.data);
             setLoading(false);
+          }
         });
       }
       fetchData();
+      return () => {    //cleanup if leave the page
+        isCancelled = true;
+      };
     }, []);
 
 

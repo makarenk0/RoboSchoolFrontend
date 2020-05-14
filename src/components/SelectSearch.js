@@ -8,34 +8,37 @@ export const SelectSearch = ({request, fields, placeholder, allData}) => {
 
 
     useEffect(() => {
+    let isCancelled = false;
     const options = async (request, fields) => {
-      
         await axios.get(request, 
         {
         headers:{
           "Authorization": "Bearer " + sessionStorage.getItem("accessToken")  
         }})
         .then(response => {
-          
-          if(typeof(fields)==="string"){  //if we display the same data which we send to server after submit
-            let newData = response.data.map(x =>(x[fields].toString()))
-            setData(newData) 
-            setSendData(newData)
+          if(!isCancelled){
+              if(typeof(fields)==="string"){  //if we display the same data which we send to server after submit
+                  let newData = response.data.map(x =>(x[fields].toString()))
+                  setData(newData) 
+                  setSendData(newData)
+              }
+              else{ //display some custom options and each of it matches some hidden data( in sendData) which we send then
+                  let newData = []
+                  let newSendData = []
+                  response.data.forEach(function(element, i, arr){
+                      newData.push((fields.displayFields.map( x => (element[x]))).join(" "))
+                      newSendData.push(element[fields.servName])     
+                  });
+                  setData(newData)
+                  setSendData(newSendData)
+              }  
           }
-          else{ //display some custom options and each of it matches some hidden data( in sendData) which we send then
-            let newData = []
-            let newSendData = []
-            response.data.forEach(function(element, i, arr){
-                newData.push((fields.displayFields.map( x => (element[x]))).join(" "))
-                newSendData.push(element[fields.servName])     
-            });
-            setData(newData)
-            setSendData(newSendData)
-          }  
-
         });
     }
     options(request, fields);
+    return () => {    //cleanup if leave the page
+      isCancelled = true;
+    };
    }, [request, fields]);
     return (
         <Typeahead

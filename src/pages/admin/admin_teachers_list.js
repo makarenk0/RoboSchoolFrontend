@@ -10,6 +10,7 @@ export const Teachers_list = () =>{
     const [loading, setLoading] = useState(true);
  
     useEffect(() => {
+      let isCancelled = false;
       const fetchData = async () => {
       await axios.get('https://localhost:44354/api/admin/get_all_teachers', 
       {
