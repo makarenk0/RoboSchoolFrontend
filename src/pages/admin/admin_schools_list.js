@@ -7,8 +7,8 @@ export const Schools_list = () =>{
     return(
       <div>
       <div className="container" style={{marginTop: "25px", width: "50%"}}>
-            <AddingForm params={[{type: 'input', title: 'adress', servName: 'adress', servData: '',endRow: false}, 
-                                  {type: 'input', title: 'classes number', servName: 'aud_number', servData: '', endRow: true},
+            <AddingForm params={[{type: 'text', title: 'adress', servName: 'adress', servData: '',endRow: false}, 
+                                  {type: 'number', title: 'classes number', servName: 'aud_number', servData: '', endRow: true},
                                   {type: 'select', title: 'teacher', servName: {servName: 'id_teacher', displayFields: ['name', 'surname', 'lastname']}, servData: 'https://localhost:44354/api/admin/get_all_teachers', endRow: true},
                                   {type: 'select', title: 'manager', servName: {servName: 'id_manager', displayFields: ['name', 'surname', 'lastname']}, servData: 'https://localhost:44354/api/admin/get_all_managers', endRow: true}
                                  //{type: 'multiple-select', title: 'items', servName: 'adress', servData: 'https://localhost:44354/api/admin/get_all_schools', endRow: true}

@@ -7,6 +7,7 @@ export const Table = ({request, onDelete=null}) =>{
 
   const [servData, setDataServ] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [emptyTable, setEmptyTable] = useState(false);
 
   useEffect(() => {
     let isCancelled = false;
@@ -18,9 +19,15 @@ export const Table = ({request, onDelete=null}) =>{
     }})
       .then(response => {     
             if(!isCancelled){
-              setDataServ(response.data)       
+              if(response.data.length!==0){
+                console.log(response)
+                setDataServ(response.data) 
+              }
+              else{ 
+                setEmptyTable(true)
+              }   
               setLoading(false);
-            }               
+            }              
       });
     }
     fetchData();
@@ -31,7 +38,9 @@ export const Table = ({request, onDelete=null}) =>{
 
 
   const deleteItem = async(id) => {
+    if(servData.length===1) {setEmptyTable(true)}
     setDataServ(servData.filter(row => row[Object.keys(row)[0]]!==id));
+    
     await axios.get(onDelete + id, 
     {
       headers:{
@@ -39,7 +48,8 @@ export const Table = ({request, onDelete=null}) =>{
     }})
   }
     return(
-      loading ? <Loader /> :<table className="table">
+      emptyTable?<div className="container" style={{display: "flex", alignItems: "center", justifyContent: "center"}}><span><b>Table is empty</b></span></div> : 
+      (loading ? <Loader /> :<table className="table">
   <thead>
     <tr>
     {Object.keys(servData[0]).map(x =>(
@@ -60,6 +70,25 @@ export const Table = ({request, onDelete=null}) =>{
     servData.map(element =>(
       <tr key={element[Object.keys(element)[0]]}>
         {Object.keys(element).map(cell => (
+          Array.isArray(element[cell])? 
+          <td key={cell}>
+            <table className="table table-bordered">
+            <thead>
+            <tr>
+                 {Object.keys(element[cell][0]).map(x =>(
+                    <th key={x.toString()} scope="col">
+                     {x}
+                    </th>
+                  ))}
+           </tr>
+            </thead>
+            <tbody>
+                {element[cell].map(inArrayelem => (<tr key = {element[cell].indexOf(inArrayelem)}>{Object.keys(inArrayelem).map(field =>(<td key={field}>{inArrayelem[field]}</td>))}</tr>)   ) }
+            </tbody>
+            </table>
+  
+          </td>
+          :
           <td key={cell}>
             {element[cell]}
           </td>
@@ -79,5 +108,6 @@ export const Table = ({request, onDelete=null}) =>{
 
   </tbody>
 </table>
+      )
     )
 }

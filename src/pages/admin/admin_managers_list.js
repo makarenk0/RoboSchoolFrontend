@@ -8,12 +8,12 @@ export const Managers_list = () =>{
     return(
       <div>
       <div className="container" style={{marginTop: "25px", width: "50%"}}>
-            <AddingForm params={[{type: 'input', title: 'name', servName: 'name', servData: '',endRow: false}, 
-                                  {type: 'input', title: 'surname', servName: 'surname', servData: '', endRow: false},
-                                  {type: 'input', title: 'lastname', servName: 'lastname', servData: '', endRow: true},
-                                  {type: 'input', title: 'email', servName: 'email', servData: '', endRow: false},
+            <AddingForm params={[{type: 'text', title: 'name', servName: 'name', servData: '',endRow: false}, 
+                                  {type: 'text', title: 'surname', servName: 'surname', servData: '', endRow: false},
+                                  {type: 'text', title: 'lastname', servName: 'lastname', servData: '', endRow: true},
+                                  {type: 'text', title: 'email', servName: 'email', servData: '', endRow: false},
                                   {type: 'select', title: 'school', servName: 'adress', servData: 'https://localhost:44354/api/admin/get_all_schools', endRow: true},
-                                  {type: 'input', title: 'password', servName: 'Password_temp', servData: '', endRow: true},
+                                  {type: 'text', title: 'password', servName: 'Password_temp', servData: '', endRow: true},
                                  //{type: 'multiple-select', title: 'items', servName: 'adress', servData: 'https://localhost:44354/api/admin/get_all_schools', endRow: true}
                                 ]} submitRequest = 'https://localhost:44354/api/admin/add_manager'></AddingForm>
       </div>

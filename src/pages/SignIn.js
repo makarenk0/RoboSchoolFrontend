@@ -40,7 +40,10 @@ export const SignIn = ({match}) => {
                 console.log(response);
                 window.location.assign('/admin')
              }
-            }, (error) => {alert.show('Error', 'danger')});
+            }, (error) => {
+              console.log(error)
+              alert.show('Error', 'danger')
+            });
           }
         login();
       }
@@ -69,7 +72,7 @@ export const SignIn = ({match}) => {
           placeholder="Login"/>
 
         <input
-          type="text"
+          type="password"
           className="form-control input-field"
           value={passwordValue}
           onChange={e => setPasswordValue(e.target.value)}

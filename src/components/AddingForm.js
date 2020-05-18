@@ -17,14 +17,18 @@ export const AddingForm = ({params, submitRequest}) =>{
 
     const element = (item) =>{
         switch(item.type){
-            case "input":
+            case "text":
                 return (<div className="col" key={item.title}><input type="text" className="form-control" placeholder={item.title} 
                 onChange={e => setData({...data, [item.servName]: e.target.value})} value={data[item.servName]||''} required/>
+                </div>)
+            case "number":
+                return (<div className="col" key={item.title}><input type="number" className="form-control" placeholder={item.title} 
+                onChange={e => setData({...data, [item.servName]: parseInt(e.target.value)})} value={data[item.servName]||''} required/>
                 </div>)
             case "select":
                 return(<div className="col" key={item.title}><SelectSearch request={item.servData} fields = {item.servName} placeholder={`Select ${item.title}`} allData={{'data': data, 'setAllData' : setData, 'servName': item.servName.servName||item.servName}}/></div>)
             case "multiple-select":
-                return(<div className="col" key={item.title}><MultipleFields item={item} allData={{'data': data, 'setAllData' : setData, 'servName': item.servName}}></MultipleFields></div>)
+                return(<div className="col" key={item.title}><MultipleFields item={item} allData={{'data': data, 'setAllData' : setData, 'servName': item.servName.servName||item.servName}} counter={item.counter}></MultipleFields></div>)
             default:
                 break;
         }
@@ -39,7 +43,9 @@ export const AddingForm = ({params, submitRequest}) =>{
     });
 
     const btnSubmit = async() =>{
+       
         console.log(data);
+
         await axios.post(submitRequest,  
                 data,
         {
