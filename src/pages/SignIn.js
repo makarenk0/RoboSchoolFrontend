@@ -26,7 +26,7 @@ export const SignIn = ({match}) => {
       if(values[0].params.userType === 'admin'){
 
           const login = async () => {
-          await axios.post('https://localhost:44354/api/admin/token',
+          await axios.post('https://roboschool-api.herokuapp.com/api/admin/token',
           {
             Login: values[1],
             Password: values[2],
