@@ -15,6 +15,19 @@
     margin-top: 20px;
 }
 
+.PhoneInput{
+  input{
+    border: none;
+    outline: none;
+    margin-left: 10px;
+  }
+  .PhoneInputCountryIcon{
+    svg{
+      margin-top: -11px;
+    }
+  }
+}
+
 
 .alert-enter {
     opacity: 0;

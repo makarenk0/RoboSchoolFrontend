@@ -2,15 +2,16 @@ import React, { useState, useContext } from 'react';
 import axios from 'axios';
 import {SelectSearch} from './SelectSearch'
 import {MultipleFields} from './MultipleFields'
-
 import {AlertContext} from '../context/alert/alertContext'
-
 import { Alert } from '../components/Alert'
+import {MyPhoneInput} from './MyPhoneInput'
 
 
 export const AddingForm = ({params, submitRequest}) =>{
 
     const [data, setData] = useState({})
+    const [loader, setLoader] = useState(false);
+
     const alert = useContext(AlertContext)
     var rows = []
     var rowArray = []
@@ -18,12 +19,18 @@ export const AddingForm = ({params, submitRequest}) =>{
     const element = (item) =>{
         switch(item.type){
             case "text":
-                return (<div className="col" key={item.title}><input type="text" className="form-control" placeholder={item.title} 
+                return (<div className="col" key={item.title}>
+                    <input type="text" className="form-control" placeholder={item.title} 
                 onChange={e => setData({...data, [item.servName]: e.target.value})} value={data[item.servName]||''} required/>
                 </div>)
             case "number":
-                return (<div className="col" key={item.title}><input type="number" className="form-control" placeholder={item.title} 
+                return (<div className="col" key={item.title}>
+                    <input type="number" className="form-control" placeholder={item.title} 
                 onChange={e => setData({...data, [item.servName]: parseInt(e.target.value)})} value={data[item.servName]||''} required/>
+                </div>)
+            case "phone":
+                return (<div className="col" key={item.title}>
+                 <MyPhoneInput data={data} setData={setData} servName={item.servName}></MyPhoneInput>
                 </div>)
             case "select":
                 return(<div className="col" key={item.title}><SelectSearch request={item.servData} fields = {item.servName} placeholder={`Select ${item.title}`} allData={{'data': data, 'setAllData' : setData, 'servName': item.servName.servName||item.servName}}/></div>)
@@ -43,7 +50,7 @@ export const AddingForm = ({params, submitRequest}) =>{
     });
 
     const btnSubmit = async() =>{
-       
+        setLoader(true)
         console.log(data);
 
         await axios.post(submitRequest,  
@@ -54,8 +61,10 @@ export const AddingForm = ({params, submitRequest}) =>{
         }}).then(response => {
             alert.show('Successful!', 'success')
             setData({})
+            setLoader(false)
         }, error =>{
             alert.show('Error!', 'danger')
+            setLoader(false)
         })
     }
 
@@ -63,7 +72,23 @@ export const AddingForm = ({params, submitRequest}) =>{
         <form>
             <Alert styleAtr="signin-alert container"/>
             {rows}
-            <div className="form-group row"><div style={{display: "flex", alignItems: "center", justifyContent: "center"}} className="col"><button onClick={() => btnSubmit()} type="button" className="btn btn-success">Submit</button></div></div>
+            
+            <div className="form-group row">
+                <div style={{display: "flex", alignItems: "center", justifyContent: "center"}} className="col">
+
+                    {loader ? <div className="spinner-grow" role="status" style={{position: "absolute", width: "3rem", height: "3rem", margin: "0px 0px 0px -70px"}}>
+                                 <span className="sr-only">Loading...</span>
+                              </div> : null
+                    }
+
+                    <button onClick={() => btnSubmit()} type="button" className="btn btn-success" disabled={loader}>Submit</button>
+
+                    {loader ? <div className="spinner-grow" role="status" style={{position: "absolute", width: "3rem", height: "3rem", margin: "0px 0px 0px 70px"}}>
+                                 <span className="sr-only">Loading...</span>
+                              </div> : null
+                    }
+                </div>
+            </div>
         </form>
     )
 }

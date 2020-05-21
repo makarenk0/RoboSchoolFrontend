@@ -73,8 +73,8 @@ export const SignIn = ({match}) => {
           onChange={e => setLoginValue(e.target.value)}
           placeholder="Login" disabled={loader}/>
 
-        {loader ? <div class="spinner-grow" role="status" style={{position: "absolute", width: "3rem", height: "3rem", margin: "-15px 0px 0px -25px"}}>
-             <span class="sr-only">Loading...</span>
+        {loader ? <div className="spinner-grow" role="status" style={{position: "absolute", width: "3rem", height: "3rem", margin: "-15px 0px 0px -25px"}}>
+             <span className="sr-only">Loading...</span>
         </div> : null
         }
 
