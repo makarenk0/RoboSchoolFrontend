@@ -12,21 +12,22 @@ export const SignIn = ({match}) => {
 
     const [loginValue, setLoginValue] = useState('')
     const [passwordValue, setPasswordValue] = useState('')
+    const [loader, setLoader] = useState(false)
   
 
     const alert = useContext(AlertContext)
 
 
     const btnSubmit = values =>{
-      
+      setLoader(true)
       //window.location.assign('/'); when backend ready
-      console.log(values[0].params.userType);   //usertype
-      console.log(values[1]);                   //login
-      console.log(values[2]);   
+      //console.log(values[0].params.userType);   //usertype
+      //console.log(values[1]);                   //login
+      //console.log(values[2]);   
       if(values[0].params.userType === 'admin'){
 
           const login = async () => {
-          await axios.post('https://roboschool-api.herokuapp.com/api/admin/token',
+          await axios.post('https://localhost:44354/api/admin/token',
           {
             Login: values[1],
             Password: values[2],
@@ -38,6 +39,7 @@ export const SignIn = ({match}) => {
                 alert.show('Successfull sign in', 'success')
                 sessionStorage.setItem("accessToken", response.data.access_token);
                 console.log(response);
+                setLoader(false)
                 window.location.assign('/admin')
              }
             }, (error) => {
@@ -69,19 +71,24 @@ export const SignIn = ({match}) => {
           className="form-control input-field"
           value={loginValue}
           onChange={e => setLoginValue(e.target.value)}
-          placeholder="Login"/>
+          placeholder="Login" disabled={loader}/>
+
+        {loader ? <div class="spinner-grow" role="status" style={{position: "absolute", width: "3rem", height: "3rem", margin: "-15px 0px 0px -25px"}}>
+             <span class="sr-only">Loading...</span>
+        </div> : null
+        }
 
         <input
           type="password"
           className="form-control input-field"
           value={passwordValue}
           onChange={e => setPasswordValue(e.target.value)}
-          placeholder="Password"/>
+          placeholder="Password" disabled={loader}/>
       </div>
     </form>
     <div className="btn-group pt-3">
-        <div><RouteButton action={btnBack} text = {'Back'} color={'btn-secondary'}></RouteButton></div>
-        <div style={{marginLeft: '50px'}}><RouteButton action={btnSubmit} text = {'Submit'} userType={[match, loginValue, passwordValue]}></RouteButton></div>
+        <div><RouteButton action={btnBack} text = {'Back'} color={'btn-secondary'} isDisabled={loader}></RouteButton></div>
+        <div style={{marginLeft: '50px'}}><RouteButton action={btnSubmit} text = {'Submit'} userType={[match, loginValue, passwordValue]} isDisabled={loader}></RouteButton></div>
     </div>
       <p className="lead" style={{marginTop: '20px'}}>
         Version <strong>1.0</strong>
