@@ -10,7 +10,7 @@ export const Home = () =>{
     // useEffect(() => {
     //   const fetchData = async () => {
     //     const result = await axios(
-    //       'https://localhost:44354/api/manager/all/0',
+    //       'https://roboschool-api.herokuapp.com/api/manager/all/0',
     //     );
    
     //     setData(result.data);

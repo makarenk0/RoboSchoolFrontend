@@ -17,7 +17,6 @@ export const SelectSearch = ({request, fields, placeholder, allData}) => {
         }})
         .then(response => {
           if(!isCancelled){
-            console.log(response.data);
               if(typeof(fields)==="string"){  //if we display the same data which we send to server after submit
                   let newData = response.data.map(x =>(x[fields].toString()))
                   setData(newData) 

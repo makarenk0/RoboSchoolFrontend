@@ -3,9 +3,9 @@ import {RouteButton} from '../components/RouteButton';
 import {AlertContext} from '../context/alert/alertContext'
 
 import { Alert } from '../components/Alert'
+import axios from 'axios';
 
 //test
-import axios from 'axios';
 
 
 export const SignIn = ({match}) => {
@@ -21,13 +21,13 @@ export const SignIn = ({match}) => {
     const btnSubmit = values =>{
       setLoader(true)
       //window.location.assign('/'); when backend ready
-      //console.log(values[0].params.userType);   //usertype
-      //console.log(values[1]);                   //login
-      //console.log(values[2]);   
+      console.log(values[0].params.userType);   //usertype
+      console.log(values[1]);                   //login
+      console.log(values[2]);   
       if(values[0].params.userType === 'admin'){
 
           const login = async () => {
-          await axios.post('https://localhost:44354/api/admin/token',
+          await axios.post('https://roboschool-api.herokuapp.com/api/admin/token',
           {
             Login: values[1],
             Password: values[2],
@@ -95,10 +95,8 @@ export const SignIn = ({match}) => {
       </p>
       
     </div>
-   
   </div>
   )
-  
   return res
 }
 

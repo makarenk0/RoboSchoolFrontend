@@ -6,7 +6,7 @@ export const Requests_list = () =>{
     return(
       <div>
         <div style={{marginTop: "50px"}}>
-            {<Table request={'https://localhost:44354/api/admin/get_all_requests'} onDelete={'https://localhost:44354/api/admin/delete_request/'}></Table>}
+            {<Table request={'https://roboschool-api.herokuapp.com/api/admin/get_all_requests'} onDelete={'https://roboschool-api.herokuapp.com/api/admin/delete_request/'}></Table>}
         </div>
       </div>
     )

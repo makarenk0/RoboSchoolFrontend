@@ -20,7 +20,7 @@ export const Table = ({request, onDelete=null}) =>{
       .then(response => {     
             if(!isCancelled){
               if(response.data.length!==0){
-                console.log(response)
+                console.log(response.data)
                 setDataServ(response.data) 
               }
               else{ 
@@ -54,7 +54,7 @@ export const Table = ({request, onDelete=null}) =>{
     <tr>
     {Object.keys(servData[0]).map(x =>(
             <th key={x.toString()} scope="col">
-                {x}
+                {x.replace("_", " ")}
             </th>
         ))}
 
@@ -75,11 +75,11 @@ export const Table = ({request, onDelete=null}) =>{
             <table className="table table-bordered">
             <thead>
             <tr>
-                 {Object.keys(element[cell][0]).map(x =>(
+                 {element[cell].length!==0 ? Object.keys(element[cell][0]).map(x =>(
                     <th key={x.toString()} scope="col">
-                     {x}
+                     {x.replace("_", " ")}
                     </th>
-                  ))}
+                  )) : null}
            </tr>
             </thead>
             <tbody>
