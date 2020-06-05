@@ -29,15 +29,15 @@ export const SignIn = ({match}) => {
         let request;
         let role;
         if(values[0].params.userType === 'admin') { 
-          request = 'https://localhost:44354/api/admin/token' 
+          request = 'https://roboschool-api.herokuapp.com/api/admin/token' 
           role = 'admin'
         }
         else if(values[0].params.userType === 'manager'){
-          request = 'https://localhost:44354/api/manager/token' 
+          request = 'https://roboschool-api.herokuapp.com/api/manager/token' 
           role = 'manager'
         }
         else if(values[0].params.userType === 'teacher'){
-          request = 'https://localhost:44354/api/teacher/token' 
+          request = 'https://roboschool-api.herokuapp.com/api/teacher/token' 
           role = 'teacher'
         }
           
