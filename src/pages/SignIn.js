@@ -24,14 +24,28 @@ export const SignIn = ({match}) => {
       console.log(values[0].params.userType);   //usertype
       console.log(values[1]);                   //login
       console.log(values[2]);   
-      if(values[0].params.userType === 'admin'){
-
-          const login = async () => {
-          await axios.post('https://roboschool-api.herokuapp.com/api/admin/token',
+      
+      const login = async () => {
+        let request;
+        let role;
+        if(values[0].params.userType === 'admin') { 
+          request = 'https://localhost:44354/api/admin/token' 
+          role = 'admin'
+        }
+        else if(values[0].params.userType === 'manager'){
+          request = 'https://localhost:44354/api/manager/token' 
+          role = 'manager'
+        }
+        else if(values[0].params.userType === 'teacher'){
+          request = 'https://localhost:44354/api/teacher/token' 
+          role = 'teacher'
+        }
+          
+            await axios.post(request ,
           {
             Login: values[1],
             Password: values[2],
-            Role: "admin"
+            Role: role
           }
           )
             .then(response => {
@@ -40,7 +54,11 @@ export const SignIn = ({match}) => {
                 sessionStorage.setItem("accessToken", response.data.access_token);
                 console.log(response);
                 setLoader(false)
-                window.location.assign('/admin')
+
+                if(role==='admin'){ window.location.assign('/admin/schools_list')}
+                else if(role==='manager') { window.location.assign('/manager/home')}
+                else if(role==='teacher') { window.location.assign('/teacher/home')}
+
              }
             }, (error) => {
               console.log(error)
@@ -48,7 +66,7 @@ export const SignIn = ({match}) => {
             });
           }
         login();
-      }
+      
    }
 
   const btnBack = () =>(

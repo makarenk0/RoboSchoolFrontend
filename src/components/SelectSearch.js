@@ -25,8 +25,10 @@ export const SelectSearch = ({request, fields, placeholder, allData}) => {
               else{ //display some custom options and each of it matches some hidden data( in sendData) which we send then
                   let newData = []
                   let newSendData = []
+                 
                   response.data.forEach(function(element, i, arr){
                       newData.push((fields.displayFields.map( x => (element[x]))).join(" "))
+                      console.log(element)
                       newSendData.push(element[fields.servName])     
                   });
                   setData(newData)

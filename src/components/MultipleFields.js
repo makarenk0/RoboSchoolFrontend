@@ -11,6 +11,7 @@ export const MultipleFields = ({item, allData, counter = true}) =>{
             allData.setAllData({...allData.data, [allData.servName] : data})
         }
         add();
+        //eslint-disable-next-line 
     }, [data]);
 
 
@@ -39,12 +40,13 @@ export const MultipleFields = ({item, allData, counter = true}) =>{
 
     const addNewRows = () =>{
         data.forEach(function(element, i, arr) {
+            console.log(item.servName.selectField)
             rows.push(
             <div className="form-group row" key={i}>
-                <div className="col" key={'select'}><SelectSearch request={item.servData} fields = {item.servName} placeholder={`Select ${item.title}`} allData={{'data': data[i], 'setAllData' : (newData) =>{ let newArr = [...data]; 
+                <div className="col" key={'select'}><SelectSearch request={item.servData} fields = {{'servName' : 'id_item', 'displayFields' : item.servName.displayFields}} placeholder={`Select ${item.title}`} allData={{'data': data[i], 'setAllData' : (newData) =>{ let newArr = [...data]; 
                                                                                                                                                                                                                newArr[i] = newData;
                                                                                                                                                                                                                setData(newArr); 
-                }, 'servName': allData.servName}}/></div>
+                }, 'servName': item.servName.selectField/*allData.servName*/}}/></div>
 
                 {counter ? 
                 <div className="col-md-auto" key={'amount'}>

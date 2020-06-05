@@ -1,9 +1,10 @@
 import React, {useState, useEffect} from 'react';
 import axios from 'axios';
 import {Loader} from './Loader'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faTimes} from '@fortawesome/free-solid-svg-icons'
 
-
-export const Table = ({request, onDelete=null}) =>{
+export const Table = ({request, onDelete=null, extraButtons=null}) =>{
 
   const [servData, setDataServ] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -20,7 +21,6 @@ export const Table = ({request, onDelete=null}) =>{
       .then(response => {     
             if(!isCancelled){
               if(response.data.length!==0){
-                console.log(response.data)
                 setDataServ(response.data) 
               }
               else{ 
@@ -34,7 +34,7 @@ export const Table = ({request, onDelete=null}) =>{
     return () => {    //cleanup if leave the page
       isCancelled = true;
     };
-  }, [request]);
+  }, [request, loading]);
 
 
   const deleteItem = async(id) => {
@@ -47,6 +47,23 @@ export const Table = ({request, onDelete=null}) =>{
         "Authorization": "Bearer " + sessionStorage.getItem("accessToken")  
     }})
   }
+  
+  const extraButtonAction = async(id, request) => {
+    setLoading(true);
+    await axios.get(request + id, 
+    {
+      headers:{
+        "Authorization": "Bearer " + sessionStorage.getItem("accessToken")  
+    }})
+    .then( response =>{
+      setLoading(false);
+    }
+    );
+  }
+
+
+
+
     return(
       emptyTable?<div className="container" style={{display: "flex", alignItems: "center", justifyContent: "center"}}><span><b>Table is empty</b></span></div> : 
       (loading ? <Loader /> :<table className="table">
@@ -57,7 +74,9 @@ export const Table = ({request, onDelete=null}) =>{
                 {x.replace("_", " ")}
             </th>
         ))}
-
+    {
+      extraButtons!=null ? extraButtons.map(x =>(<th key={x['name']} scope="col">{x['name']}</th>)) : null
+    }
     {
         onDelete!=null ? 
     (<th key={"onDelete"} scope="col">delete  
@@ -94,11 +113,23 @@ export const Table = ({request, onDelete=null}) =>{
           </td>
         ))}
         {
-          onDelete!=null ? <td><button
+          extraButtons!=null ? extraButtons.map(x=>(<td key={x['name']}>
+                               <button
+                               type="button"
+                               className="btn btn-outline-primary btn-sm"
+                               onClick={() => extraButtonAction(element[Object.keys(element)[0]], x['request'])} 
+                               disabled={ element[Object.keys(x['enable'])[0]]===x['enable'][Object.keys(x['enable'])[0]] ? false : true}
+                              >   <FontAwesomeIcon icon={x['icon']}/>
+                              </button>
+                              </td>)) : null
+        }
+        {
+          onDelete!=null ? <td>
+                                <button
                                 type="button"
                                 className="btn btn-outline-danger btn-sm"
                                 onClick={() => deleteItem(element[Object.keys(element)[0]])}
-                                >&times;
+                                >   <FontAwesomeIcon icon={faTimes}/>
                                 </button>
                             </td> : null
         }
