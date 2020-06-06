@@ -1,24 +1,52 @@
 import React, { useState, useEffect} from 'react';
-import {SelectSearch} from './SelectSearch'
+import {Typeahead} from 'react-bootstrap-typeahead';
+import axios from 'axios';
 
 
-export const MultipleFields = ({item, allData, counter = true}) =>{
-    const [data, setData] = useState([{[allData.servName] : '', amount: 1}])
-    
+export const MultipleFields = ({servName, wrapName, displayNames, allData, placeholder, servDataRequest, counter = true}) =>{
+    const [data, setData] = useState([{[servName] : '', amount: 1}])
+
+     const [optionsData, setOptionsData] = useState([])
+     const [sendData, setSendData] = useState([])
+
     var rows = []
+
     useEffect(() => {
         const add = () => {
-            allData.setAllData({...allData.data, [allData.servName] : data})
+            allData.setAllData({...allData.data, [wrapName] : data})
         }
         add();
         //eslint-disable-next-line 
-    }, [data]);
+    }, [data, wrapName]);
+
+    useEffect(() => {
+        const loadServData = async (servDataRequest) => {
+            await axios.get(servDataRequest, 
+            {
+            headers:{
+              "Authorization": "Bearer " + sessionStorage.getItem("accessToken")  
+            }})
+            .then(response =>{
+                let newOptionsData = []
+                let newSendData = []
+
+                response.data.forEach(function(element, i, arr){
+                      newOptionsData.push((displayNames.map( x => (element[x]))).join(" "))
+                      newSendData.push(element[servName])     
+                });
+                  setOptionsData(newOptionsData)
+                  setSendData(newSendData)
+            })
+        }
+        loadServData(servDataRequest)
+    }, [servDataRequest, displayNames, servName]);
 
 
     const addRow = () =>{
-        setData([...data, {[allData.servName] : '', amount: 1}])
+        setData([...data, {[servName] : '', amount: 1}])
     }
 
+    
     const increaseCounter = (i) =>{
         let newArr = [...data]; 
         newArr[i]['amount']++;
@@ -35,19 +63,29 @@ export const MultipleFields = ({item, allData, counter = true}) =>{
                 newArr[i]['amount']--;
                 setData(newArr);
             }
-            console.log(data)
     }
+
 
     const addNewRows = () =>{
         data.forEach(function(element, i, arr) {
-            console.log(item.servName.selectField)
             rows.push(
             <div className="form-group row" key={i}>
-                <div className="col" key={'select'}><SelectSearch request={item.servData} fields = {{'servName' : 'id_item', 'displayFields' : item.servName.displayFields}} placeholder={`Select ${item.title}`} allData={{'data': data[i], 'setAllData' : (newData) =>{ let newArr = [...data]; 
-                                                                                                                                                                                                               newArr[i] = newData;
-                                                                                                                                                                                                               setData(newArr); 
-                }, 'servName': item.servName.selectField/*allData.servName*/}}/></div>
 
+                <div className="col" key={'select'}>
+                <Typeahead
+                    id="basic-typeahead-example"
+                    labelKey="name"
+                    multiple={false}
+                    onChange={(e) => {
+                        let newData = [...data]
+                        newData[i][servName] = sendData[optionsData.indexOf(e[0])]
+                        setData(newData)
+                    }}
+                    selected={allData[allData.servName]}  // TO DO fix
+                    options={optionsData}
+                    placeholder={placeholder}
+                />
+                </div>
                 {counter ? 
                 <div className="col-md-auto" key={'amount'}>
                     <div style={{display: "block"}}>
@@ -71,7 +109,7 @@ export const MultipleFields = ({item, allData, counter = true}) =>{
                                 <button style={{marginTop: "3px"}} //to fix
                                 type="button"
                                 className="btn btn-outline-danger btn-sm"
-                                onClick={() => setData(data.filter(x =>(data.indexOf(x)!==i)))}
+                                onClick={() => data.length>1 ? setData(data.filter(x =>(data.indexOf(x)!==i))) : null}
                                 >&times;
                                 </button>
                             </div>

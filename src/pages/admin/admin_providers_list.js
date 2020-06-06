@@ -8,7 +8,7 @@ export const Providers_list = () =>{
     return(
       <div>
       <div className="container" style={{marginTop: "25px", width: "50%"}}>
-            <AddingForm params={[{type: 'text', title: 'provider name', servName: 'prov_name', servData: '',endRow: false}, 
+            <AddingForm params={[{type: 'text', title: 'provider name', servName: 'provider_name', servData: '',endRow: false}, 
                                   {type: 'phone', title: 'contact number', servName: 'contact_number', servData: '', endRow: true},
                                   {type: 'text', title: 'link', servName: 'site_link', servData: '', endRow: true},      
                                  //{type: 'multiple-select', title: 'items', servName: 'adress', servData: 'https://roboschool-api.herokuapp.com/api/admin/get_all_schools', endRow: true}
