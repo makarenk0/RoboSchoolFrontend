@@ -49,10 +49,18 @@ export const AddingForm = ({params, submitRequest}) =>{
         }
     });
 
+    const checkIfValid = () =>{
+        if(Object.keys(data).length !== params.length){
+            alert.show('Please, fill all the required fields', 'danger')
+            setLoader(false)
+            return false;
+        }
+        return true;
+    }
+
     const btnSubmit = async() =>{
         setLoader(true)
-        console.log(data);
-
+        if(checkIfValid()){
         await axios.post(submitRequest,  
                 data,
         {
@@ -66,6 +74,7 @@ export const AddingForm = ({params, submitRequest}) =>{
             alert.show('Error!', 'danger')
             setLoader(false)
         })
+    }
     }
 
     return(

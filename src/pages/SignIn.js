@@ -61,8 +61,8 @@ export const SignIn = ({match}) => {
 
              }
             }, (error) => {
-              console.log(error)
-              alert.show('Error', 'danger')
+              alert.show(error.response.data.errorText, 'danger')
+              setLoader(false)
             });
           }
         login();
@@ -76,8 +76,10 @@ export const SignIn = ({match}) => {
 
   const res = (
    
-  <div className="container text-center" style={{marginTop: "10%"}}>
+  <div className="container text-center" style={{marginTop: "5%"}}>
+    <div style={{height: "50px"}}>
      <Alert styleAtr="signin-alert container col-4"/>
+     </div>
     <div className="container jumbotron col-4">
     
       <h3 className="display-4">Sign in</h3>

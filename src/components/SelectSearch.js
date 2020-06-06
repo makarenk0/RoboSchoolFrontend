@@ -28,7 +28,6 @@ export const SelectSearch = ({request, fields, placeholder, allData}) => {
                  
                   response.data.forEach(function(element, i, arr){
                       newData.push((fields.displayFields.map( x => (element[x]))).join(" "))
-                      console.log(element)
                       newSendData.push(element[fields.servName])     
                   });
                   setData(newData)

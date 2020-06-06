@@ -10,7 +10,7 @@ export const MyPhoneInput = ({data, setData, servName}) => {
     }   
 
     return(
-        <PhoneInput flags={flags} defaultCountry="UA" className="form-control"
+        <PhoneInput flags={flags} defaultCountry="UA" className="form-control" style={{display: "flex"}}
         placeholder={"Enter phone number"}
         onChange={setPhoneNum}/>
     )
