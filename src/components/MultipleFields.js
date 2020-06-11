@@ -2,15 +2,21 @@ import React, { useState, useEffect} from 'react';
 import {Typeahead} from 'react-bootstrap-typeahead';
 import axios from 'axios';
 
+import 'react-phone-number-input/style.css'
+import PhoneInput from 'react-phone-number-input'
+import flags from 'react-phone-number-input/flags'
 
-export const MultipleFields = ({servName, wrapName, displayNames, allData, placeholder, servDataRequest, counter = true}) =>{
+
+export const MultipleFields = ({servName, wrapName, displayNames, allData, placeholder, servDataRequest, phonePlaceholder = false, counter = true}) =>{
     const [data, setData] = useState([{[servName] : '', amount: 1}])
+    var rows = []
+
+    
 
      const [optionsData, setOptionsData] = useState([])
      const [sendData, setSendData] = useState([])
 
-    var rows = []
-
+     
     useEffect(() => {
         const add = () => {
             allData.setAllData({...allData.data, [wrapName] : data})
@@ -21,7 +27,7 @@ export const MultipleFields = ({servName, wrapName, displayNames, allData, place
 
     useEffect(() => {
         const loadServData = async (servDataRequest) => {
-            await axios.get(servDataRequest, 
+        await axios.get(servDataRequest, 
             {
             headers:{
               "Authorization": "Bearer " + sessionStorage.getItem("accessToken")  
@@ -36,11 +42,14 @@ export const MultipleFields = ({servName, wrapName, displayNames, allData, place
                 });
                   setOptionsData(newOptionsData)
                   setSendData(newSendData)
-            })
+            }) 
+        } 
+        if(!phonePlaceholder){
+            loadServData(servDataRequest)
         }
-        loadServData(servDataRequest)
-    }, [servDataRequest, displayNames, servName]);
+    }, [servDataRequest, displayNames, servName, phonePlaceholder]);
 
+    
 
     const addRow = () =>{
         setData([...data, {[servName] : '', amount: 1}])
@@ -72,7 +81,20 @@ export const MultipleFields = ({servName, wrapName, displayNames, allData, place
             <div className="form-group row" key={i}>
 
                 <div className="col" key={'select'}>
-                <Typeahead
+                {phonePlaceholder? 
+
+                    <PhoneInput flags={flags} defaultCountry="UA" className="form-control" style={{display: "flex"}}
+                    placeholder={"Enter phone number"}
+                    onChange={(e) => {
+                        console.log()
+                        let newData = [...data]
+                        newData[i][servName] = e
+                        setData(newData)
+                    }}/>
+
+                    :
+
+                    <Typeahead
                     id="basic-typeahead-example"
                     labelKey="name"
                     multiple={false}
@@ -81,10 +103,11 @@ export const MultipleFields = ({servName, wrapName, displayNames, allData, place
                         newData[i][servName] = sendData[optionsData.indexOf(e[0])]
                         setData(newData)
                     }}
-                    selected={allData[allData.servName]}  // TO DO fix
+                    selected={allData[allData.servName]}  
                     options={optionsData}
                     placeholder={placeholder}
                 />
+                }
                 </div>
                 {counter ? 
                 <div className="col-md-auto" key={'amount'}>

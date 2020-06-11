@@ -12,7 +12,7 @@ export const Manager_home = () =>{
     useEffect(() => {
         let isCancelled = false;
         const fetchData = async () => {
-        await axios.get('https://roboschool-api.herokuapp.com/api/manager/get', 
+        await axios.get('https://localhost:44354/api/manager/get', 
         {
           headers:{
             "Authorization": "Bearer " + sessionStorage.getItem("accessToken")  
@@ -33,7 +33,7 @@ export const Manager_home = () =>{
     return(
     <div style={{marginTop: "60px"}}>
         <form>
-           {loading ? <Loader /> : <AccountDataDisplay data={managerData} role='Manager'></AccountDataDisplay>}
+           {loading ? <Loader /> : <AccountDataDisplay data={managerData} userRole='Manager'></AccountDataDisplay>}
         </form>
     </div>)
 }

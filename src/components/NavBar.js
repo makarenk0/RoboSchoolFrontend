@@ -1,8 +1,15 @@
 import React from 'react'
 import {NavLink} from 'react-router-dom'
 
-export const Navbar = ({params}) => (
-  <nav className="navbar navbar-dark navbar-expand-lg bg-primary" style={{width: "100%"}}>
+export const Navbar = ({params}) => {
+  
+  const signOut = () =>{
+    window.location.assign('/')
+    sessionStorage.removeItem("accessToken") 
+  }
+
+
+  return(<nav className="navbar navbar-dark navbar-expand-lg bg-primary" style={{width: "100%"}}>
     <div className="navbar-brand">
       RoboSchool
     </div>
@@ -15,8 +22,10 @@ export const Navbar = ({params}) => (
                 exact>
                 {x.title}
                 </NavLink>
-      </li>
+            </li>
         ))}
+        
     </ul>
-  </nav>
-)
+    <button style={{marginLeft: "auto"}} type="button" className="btn btn-light" onClick={() => {signOut()}}>Sign out</button>
+  </nav>)
+}

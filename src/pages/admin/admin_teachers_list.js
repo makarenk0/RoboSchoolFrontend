@@ -10,14 +10,14 @@ export const Teachers_list = () =>{
                                   {type: 'text', title: 'surname', servName: 'surname', servData: '', endRow: false},
                                   {type: 'text', title: 'lastname', servName: 'lastname', servData: '', endRow: true},
                                   {type: 'text', title: 'email', servName: 'email', servData: '', endRow: true},
-                                  //{type: 'select', title: 'school', servName: 'adress', servData: 'https://roboschool-api.herokuapp.com/api/admin/get_all_schools', endRow: true},
+                                  //{type: 'select', title: 'school', servName: 'adress', servData: 'https://localhost:44354/api/admin/get_all_schools', endRow: true},
                                   {type: 'text', title: 'password', servName: 'Password_temp', servData: '', endRow: true},
-                                 //{type: 'multiple-select', title: 'items', servName: 'adress', servData: 'https://roboschool-api.herokuapp.com/api/admin/get_all_schools', endRow: true}
-                                ]} submitRequest = 'https://roboschool-api.herokuapp.com/api/admin/add_teacher'></AddingForm>
+                                  {type: 'multiple-select', title: 'required item', servName: {servName: 'phone_number', wrapName: 'phones'}, servData: '', phonePlaceholder: true, counter: false, endRow: true}
+                                ]} submitRequest = 'https://localhost:44354/api/admin/add_teacher'></AddingForm>
       </div>
         <div style={{marginTop: "50px"}}>
            
-            <Table request={'https://roboschool-api.herokuapp.com/api/admin/get_all_teachers'} onDelete={'https://roboschool-api.herokuapp.com/api/admin/delete_teacher/'}></Table>
+            <Table request={'https://localhost:44354/api/admin/get_all_teachers'} onDelete={'https://localhost:44354/api/admin/delete_teacher/'}></Table>
         </div>
       </div>
     )

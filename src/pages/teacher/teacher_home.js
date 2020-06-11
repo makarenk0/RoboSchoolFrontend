@@ -12,7 +12,7 @@ export const Teacher_home = () =>{
     useEffect(() => {
         let isCancelled = false;
         const fetchData = async () => {
-        await axios.get('https://roboschool-api.herokuapp.com/api/teacher/get', 
+        await axios.get('https://localhost:44354/api/teacher/get', 
         {
           headers:{
             "Authorization": "Bearer " + sessionStorage.getItem("accessToken")  

@@ -35,7 +35,7 @@ export const AddingForm = ({params, submitRequest}) =>{
             case "select":
                 return(<div className="col" key={item.title}><SelectSearch request={item.servData} fields = {item.servName} placeholder={`Select ${item.title}`} allData={{'data': data, 'setAllData' : setData, 'servName': item.servName.servName||item.servName}}/></div>)
             case "multiple-select":
-                return(<div className="col" key={item.title}><MultipleFields servName = {item.servName.servName} wrapName={item.servName.wrapName} displayNames = {item.servName.displayNames} allData={{'data': data, 'setAllData' : setData}} placeholder={item.title} servDataRequest={item.servData} counter={item.counter}></MultipleFields></div>)
+                return(<div className="col" key={item.title}><MultipleFields servName = {item.servName.servName} wrapName={item.servName.wrapName} displayNames = {item.servName.displayNames} allData={{'data': data, 'setAllData' : setData}} placeholder={item.title} servDataRequest={item.servData} phonePlaceholder = {item.phonePlaceholder} counter={item.counter}></MultipleFields></div>)
             default:
                 break;
         }
@@ -59,6 +59,7 @@ export const AddingForm = ({params, submitRequest}) =>{
     }
 
     const btnSubmit = async() =>{
+        console.log(data)
         setLoader(true)
         if(checkIfValid()){
         await axios.post(submitRequest,  
