@@ -61,6 +61,18 @@ export const Table = ({request, onDelete=null, extraButtons=null}) =>{
     );
   }
 
+  const isTrue =(value) =>{
+    return value===true
+  }
+
+  const enablingButtons = (left, right) =>{
+    if(right.charAt(0)==='!'){
+      return left !== right.slice(1)
+    }
+    else{
+      return left === right
+    }
+  }
 
 
 
@@ -118,7 +130,7 @@ export const Table = ({request, onDelete=null, extraButtons=null}) =>{
                                type="button"
                                className="btn btn-outline-primary btn-sm"
                                onClick={() => extraButtonAction(element[Object.keys(element)[0]], x['request'])} 
-                               disabled={ element[Object.keys(x['enable'])[0]]===x['enable'][Object.keys(x['enable'])[0]] ? false : true}
+                               disabled={ (x['enable'].map(field =>(enablingButtons(element[Object.keys(field)[0]], field[Object.keys(field)[0]])))).every(isTrue) ? false : true}
                               >   <FontAwesomeIcon icon={x['icon']}/>
                               </button>
                               </td>)) : null
