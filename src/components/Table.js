@@ -6,12 +6,31 @@ import { faTimes} from '@fortawesome/free-solid-svg-icons'
 import {AlertContext} from '../context/alert/alertContext'
 import $ from "jquery";
 
-export const Table = ({request, onDelete=null, extraButtons=null}) =>{
+export const Table = ({request, onDelete=null, extraButtons=null, filterRequest = null}) =>{
 
   const [servData, setDataServ] = useState([]);
+
+  const [filter, setFilter] = useState("");
+
   const [loading, setLoading] = useState(true);
   const [emptyTable, setEmptyTable] = useState(false);
   const alert = useContext(AlertContext)
+
+  const filterLoad = async() =>{
+    await axios.post(filterRequest, 
+      {"adress" : filter},
+      {
+        headers:{
+          "Authorization": "Bearer " + sessionStorage.getItem("accessToken")  
+      }})
+        .then(response => {     
+          setDataServ(response.data)
+        }, error =>{
+          alert.show(error.response.data.errorText, 'danger')
+          setLoading(false)
+      })
+  }
+
 
   useEffect(() => {
     let isCancelled = false;
@@ -98,6 +117,16 @@ const search = (text)=>{
           <div className="divFooter"></div>
           <div className="divHeader" style={{margin: "auto", width: "200px", fontSize: "30px"}}><p><b>{(window.location.href).substr(window.location.href.lastIndexOf('/')+1).replace('_', ' ')}</b></p></div>
           
+          {filterRequest!==null?
+          <div>
+          <button type="button" style={{position: "absolute", marginLeft: "210px"}} onClick={filterLoad} className={"btn btn-dark myButtonsCol"}>Filter</button>
+          <input type="text" style={{width: "200px", position: "absolute"}} className="form-control myButtonsCol" placeholder="filter adress" onChange={e => setFilter(e.target.value)} required/>
+          </div>
+          :
+          null
+          }
+          
+
           <div style={{width: "300px", margin: "auto"}} id="mySearchField">
         <input className="form-control" id="myInput" type="text" placeholder="Search..." onChange={e =>search(e.target.value)}></input> 
         </div>

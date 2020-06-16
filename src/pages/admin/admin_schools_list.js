@@ -15,8 +15,7 @@ export const Schools_list = () =>{
                                 ]} submitRequest = 'https://roboschool-api.herokuapp.com/api/admin/add_school'></AddingForm>
       </div>
         <div style={{marginTop: "50px"}}>
-           
-             <Table request={'https://roboschool-api.herokuapp.com/api/admin/get_all_schools'} onDelete={'https://roboschool-api.herokuapp.com/api/admin/delete_school/'}></Table>
+             <Table request={'https://roboschool-api.herokuapp.com/api/admin/get_all_schools'} filterRequest="https://roboschool-api.herokuapp.com/api/admin/get_schools_with_adress" onDelete={'https://roboschool-api.herokuapp.com/api/admin/delete_school/'}></Table>
         </div>
       </div>
     )
