@@ -25,6 +25,7 @@ export const Table = ({request, onDelete=null, extraButtons=null, filterRequest 
       }})
         .then(response => {     
           setDataServ(response.data)
+          alert.show("Filtered successfully", 'success')
         }, error =>{
           alert.show(error.response.data.errorText, 'danger')
           setLoading(false)

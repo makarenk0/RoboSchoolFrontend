@@ -97,7 +97,7 @@ export const AddingForm = ({params, submitRequest}) =>{
                               </div> : null
                     }
 
-                    <button onClick={() => btnSubmit()} type="submit" className="btn btn-success" disabled={loader}>Submit</button>
+                    {params.length!==0 ? <button onClick={() => btnSubmit()} type="submit" className="btn btn-success" disabled={loader}>Submit</button> : null}
 
                     {loader ? <div className="spinner-grow" role="status" style={{position: "absolute", width: "3rem", height: "3rem", margin: "0px 0px 0px 70px"}}>
                                  <span className="sr-only">Loading...</span>
