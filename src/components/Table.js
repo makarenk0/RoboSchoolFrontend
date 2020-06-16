@@ -6,7 +6,7 @@ import { faTimes} from '@fortawesome/free-solid-svg-icons'
 import {AlertContext} from '../context/alert/alertContext'
 import $ from "jquery";
 
-export const Table = ({request, onDelete=null, extraButtons=null, filterRequest = null}) =>{
+export const Table = ({request, onDelete=null, extraButtons=null, filterRequest = null, requestsWithAllItems = null}) =>{
 
   const [servData, setDataServ] = useState([]);
 
@@ -19,6 +19,21 @@ export const Table = ({request, onDelete=null, extraButtons=null, filterRequest 
   const filterLoad = async() =>{
     await axios.post(filterRequest, 
       {"adress" : filter},
+      {
+        headers:{
+          "Authorization": "Bearer " + sessionStorage.getItem("accessToken")  
+      }})
+        .then(response => {     
+          setDataServ(response.data)
+          alert.show("Filtered successfully", 'success')
+        }, error =>{
+          alert.show(error.response.data.errorText, 'danger')
+          setLoading(false)
+      })
+  }
+
+  const reuestsWithAllItems = async() =>{
+    await axios.get(requestsWithAllItems, 
       {
         headers:{
           "Authorization": "Bearer " + sessionStorage.getItem("accessToken")  
@@ -122,6 +137,14 @@ const search = (text)=>{
           <div>
           <button type="button" style={{position: "absolute", marginLeft: "210px"}} onClick={filterLoad} className={"btn btn-dark myButtonsCol"}>Filter</button>
           <input type="text" style={{width: "200px", position: "absolute"}} className="form-control myButtonsCol" placeholder="filter adress" onChange={e => setFilter(e.target.value)} required/>
+          </div>
+          :
+          null
+          }
+
+           {requestsWithAllItems!==null?
+          <div>
+          <button type="button" style={{position: "absolute", marginLeft: "800px" }} onClick={reuestsWithAllItems} className={"btn btn-dark myButtonsCol"}>Requests with all items</button>
           </div>
           :
           null
