@@ -1,15 +1,53 @@
-import React from 'react';
+import React, {useState, useContext} from 'react';
+import axios from 'axios';
+import {Loader} from './Loader'
+import {AlertContext} from '../context/alert/alertContext'
+import {Alert} from './Alert'
 
-export const AccountDataDisplay = ({data, userRole}) =>{
-   
-   
+export const AccountDataDisplay = ({data, userRole, changeRequest}) =>{
+    const[userData, setUserData] = useState(data)
+    const [loader, setLoader] = useState(false);
+    const alert = useContext(AlertContext)
+
     const ucFirst = (str) => {
         if (!str) return str;
         return str[0].toUpperCase() + str.slice(1);
       }
 
+    const changePhonesArray = (index, newValue) =>{
+        console.log(index)
+        let newArr = [...userData.phones]
+        newArr[index]['phone'] = newValue
+        setUserData({...userData, "phones": newArr})
+    } 
+
+    const addNewPhoneField = () =>{
+        let newArr = [...userData.phones]
+        newArr.push({'phone' : ''})
+        console.log(newArr)
+        setUserData({...userData, "phones": newArr})
+    }
+
+    const btnSubmit = async() =>{
+        setLoader(true)
+        
+        await axios.post(changeRequest,  
+                userData,
+        {
+          headers:{
+            "Authorization": "Bearer " + sessionStorage.getItem("accessToken")  
+        }}).then(response => {
+            alert.show('Successful!', 'success')
+            setLoader(false)
+        }, error =>{
+            setLoader(false)
+            alert.show(error.response.data.errorText, 'danger')
+        })
+    }
+
     return(
-        <div className="container">
+        loader ? <Loader /> : <div className="container">
+             <Alert styleAtr="signin-alert container col-4"/>
         <div className="row">
             <div className="col-12">
                 <div className="card">
@@ -42,14 +80,15 @@ export const AccountDataDisplay = ({data, userRole}) =>{
                                 <div className="tab-content ml-1" id="myTabContent">
                                     <div className= "tab-pane fade active show" id="basicInfo" role="tabpanel" aria-labelledby="basicInfo-tab">
                                         
-                                        {Object.keys(data).map(x =>( x!=="phones" ?
+                                        {Object.keys(userData).map(x =>( x!=="phones" ?
                                             <div key={x}>
                                             <div className="row">
                                             <div className="col-sm-3 col-md-2 col-5">
                                                 <label style={{fontWeight: "bold"}}>{ucFirst(x.replace('_', ' '))}</label>
                                             </div>
                                             <div className="col-md-8 col-6">
-                                                {data[x]}
+                                                {x.substr(0,2)==="id"||x==="email" ? userData[x] : <input style={{width: "200px"}} className="form-control" defaultValue={userData[x]} 
+                                                onChange={e => setUserData({...userData, [x]: e.target.value})} />}
                                             </div>
                                             </div> 
                                             <hr />
@@ -61,10 +100,18 @@ export const AccountDataDisplay = ({data, userRole}) =>{
                                                 <label style={{fontWeight: "bold"}}>{ucFirst(x.replace('_', ' '))}</label>
                                             </div>
                                             <div className="col-md-8 col-6">
-                                                {data[x].map(p =>(<p>{p['phone']}<br/></p>))}
+                                                {userData[x].map(p =>(<div key={userData[x].indexOf(p)} style={{width: "200px"}}>
+                                                    {console.log(userData[x])}
+                                                    <input placeholder="Enter phone number" className="form-control" defaultValue={p['phone']}
+                                                    onChange={e => changePhonesArray(userData[x].indexOf(p), e.target.value)}/>
+                                                 </div>))}
+                                                 <button type="button" style={{marginTop: "10px", marginLeft: "40px"}} className="btn btn-info btn-sm" onClick={addNewPhoneField}>Add new phone</button>
                                             </div>
                                             </div> 
                                             <hr />
+                                                <div style={{display: "flex", alignItems: "center", justifyContent: "center"}}>
+                                                    <button type="button" style={{margin: "auto"}} className="btn btn-success btn-sm" onClick={btnSubmit}>Save changes</button>
+                                                </div>
                                             </div>
                                         )) }
                                         

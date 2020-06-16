@@ -25,15 +25,20 @@ export const AddingForm = ({params, submitRequest}) =>{
                 </div>)
             case "number":
                 return (<div className="col" key={item.title}>
-                    <input type="number" className="form-control" placeholder={item.title} 
-                onChange={e => setData({...data, [item.servName]: parseInt(e.target.value)})} value={data[item.servName]||''} required/>
+                    <input type="number" min="1" step="1" className="form-control" placeholder={item.title}
+                onChange={e => setData({...data, [item.servName]: e.target.value})}  required/>
+                </div>)
+            case "currency":
+                return (<div className="col" key={item.title}>
+                    <input type="number" min="00.01" step="00.01" className="form-control" placeholder={"00.00₴"}
+                onChange={e => setData({...data, [item.servName]: e.target.value})}  required/>
                 </div>)
             case "phone":
                 return (<div className="col" key={item.title}>
                  <MyPhoneInput data={data} setData={setData} servName={item.servName}></MyPhoneInput>
                 </div>)
             case "select":
-                return(<div className="col" key={item.title}><SelectSearch request={item.servData} fields = {item.servName} placeholder={`Select ${item.title}`} allData={{'data': data, 'setAllData' : setData, 'servName': item.servName.servName||item.servName}}/></div>)
+                return(<div className="col" key={item.title}><SelectSearch request={item.servData} fields = {item.servName} placeholder={`Select ${item.title}`} allData={{'data': data, 'setAllData' : setData, 'servName': item.servName.servName||item.servName}} required/></div>)
             case "multiple-select":
                 return(<div className="col" key={item.title}><MultipleFields servName = {item.servName.servName} wrapName={item.servName.wrapName} displayNames = {item.servName.displayNames} allData={{'data': data, 'setAllData' : setData}} placeholder={item.title} servDataRequest={item.servData} phonePlaceholder = {item.phonePlaceholder} counter={item.counter}></MultipleFields></div>)
             default:
@@ -68,6 +73,7 @@ export const AddingForm = ({params, submitRequest}) =>{
           headers:{
             "Authorization": "Bearer " + sessionStorage.getItem("accessToken")  
         }}).then(response => {
+            document.location.reload();
             alert.show('Successful!', 'success')
             setData({})
             setLoader(false)
@@ -79,7 +85,7 @@ export const AddingForm = ({params, submitRequest}) =>{
     }
 
     return(
-        <form>
+        <form id ="myAddingForm">
             <Alert styleAtr="signin-alert container"/>
             {rows}
             
@@ -91,7 +97,7 @@ export const AddingForm = ({params, submitRequest}) =>{
                               </div> : null
                     }
 
-                    <button onClick={() => btnSubmit()} type="button" className="btn btn-success" disabled={loader}>Submit</button>
+                    <button onClick={() => btnSubmit()} type="submit" className="btn btn-success" disabled={loader}>Submit</button>
 
                     {loader ? <div className="spinner-grow" role="status" style={{position: "absolute", width: "3rem", height: "3rem", margin: "0px 0px 0px 70px"}}>
                                  <span className="sr-only">Loading...</span>

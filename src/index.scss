@@ -76,4 +76,52 @@
       }
     }
   }
+  @media screen {
+    div.divFooter {
+      display: none;
+    }
+    div.divHeader {
+      display: none;
+    }
+  }
+
+  @media print {
+    
+    
+    #myAddingForm{
+      display: none;
+    }
+    #mySearchField{
+      display: none;
+    }
+    .myButtonsCol{
+      display: none;
+    }
+    @page {
+      size: auto;
+      margin: 0;
+      & :first{
+        counter-reset: page 10;
+      }
+    }
+  
+    .divFooter:before {
+      display: table-footer-group;
+      position: fixed;
+      bottom: 0px;
+      width: 100%;
+      margin-left: 43%;
+      counter-increment: page 1;
+      content: counter(page) " page";
+      font-size: 20px;
+    }
+    .divHeader:after {
+      height: 20px;
+      position: fixed;
+      margin: auto;
+      margin-left: 50%;
+    }
+    
+            
+  }
  

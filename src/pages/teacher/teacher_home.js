@@ -33,7 +33,7 @@ export const Teacher_home = () =>{
     return(
     <div style={{marginTop: "60px"}}>
         <form>
-           {loading ? <Loader /> : <AccountDataDisplay data={teacherData} role='Teacher'></AccountDataDisplay>}
+           {loading ? <Loader /> : <AccountDataDisplay data={teacherData} userRole="Teacher" changeRequest="https://roboschool-api.herokuapp.com/api/teacher/save_teacher_info/"></AccountDataDisplay>}
         </form>
     </div>)
 }
